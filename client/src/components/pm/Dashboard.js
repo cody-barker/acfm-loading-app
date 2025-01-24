@@ -52,6 +52,9 @@ function PMDashboard() {
   const [equipmentItems, setEquipmentItems] = useState([]);
   const [vehicles, setVehicles] = useState([]);
   const [trailers, setTrailers] = useState([]);
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [siteName, setSiteName] = useState('');
+  const [notes, setNotes] = useState('');
 
   useEffect(() => {
     fetchLoadingLists();
@@ -100,7 +103,9 @@ function PMDashboard() {
     try {
       const data = await api.post('/loading_lists', {
         loading_list: {
-          ...newListData,
+          date: date,
+          site_name: siteName,
+          notes: notes,
           pm_id: user.id,
           status: 'pending'
         }
@@ -108,7 +113,6 @@ function PMDashboard() {
       setLoadingLists([...loadingLists, data]);
       setOpenNewList(false);
       setNewListData({
-        date: new Date().toISOString().split('T')[0],
         site_name: '',
         notes: '',
       });
@@ -189,16 +193,16 @@ function PMDashboard() {
             label="Date"
             type="date"
             fullWidth
-            value={newListData.date}
-            onChange={(e) => setNewListData({ ...newListData, date: e.target.value })}
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
           />
           <TextField
             margin="dense"
             label="Site Name"
             type="text"
             fullWidth
-            value={newListData.site_name}
-            onChange={(e) => setNewListData({ ...newListData, site_name: e.target.value })}
+            value={siteName}
+            onChange={(e) => setSiteName(e.target.value)}
           />
           <TextField
             margin="dense"
@@ -207,8 +211,8 @@ function PMDashboard() {
             fullWidth
             multiline
             rows={4}
-            value={newListData.notes}
-            onChange={(e) => setNewListData({ ...newListData, notes: e.target.value })}
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
