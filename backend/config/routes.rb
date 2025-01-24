@@ -7,4 +7,24 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  namespace :api do
+    post '/login', to: 'sessions#create'
+    delete '/logout', to: 'sessions#destroy'
+    get '/auto_login', to: 'sessions#auto_login'
+
+    resources :equipment_items, only: [:index, :show, :create, :update, :destroy]
+    resources :vehicles, only: [:index, :show, :create, :update, :destroy]
+    resources :trailers, only: [:index, :show, :create, :update, :destroy]
+    
+    resources :loading_lists do
+      resources :loading_list_items, only: [:create, :update, :destroy]
+      resources :vehicle_assignments, only: [:create, :update, :destroy]
+      resources :trailer_assignments, only: [:create, :update, :destroy]
+    end
+
+    namespace :pm do
+      resources :dashboard, only: [:index]
+    end
+  end
 end

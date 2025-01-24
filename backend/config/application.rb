@@ -9,7 +9,7 @@ Bundler.require(*Rails.groups)
 module AcfmLoadingAppBackend
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.2
+    config.load_defaults 7.1
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
@@ -25,8 +25,26 @@ module AcfmLoadingAppBackend
     # config.eager_load_paths << Rails.root.join("extras")
 
     # Only loads a smaller set of middleware suitable for API only apps.
-    # Middleware like session, flash, cookies can be added back manually.
-    # Skip views, helpers and assets when generating a new resource.
-    config.api_only = true
+    # Middleware like session, flash, cookies and more are not enabled by default
+    # in API only apps. Set this to true if you want to enable them
+    config.api_only = false # Changed from true to false to enable sessions
+
+    # Enable cookie middleware
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore, 
+      key: '_acfm_loading_app_session',
+      same_site: :lax,
+      secure: Rails.env.production?
+
+    # CORS configuration
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins 'http://localhost:3000'
+        resource '*',
+          headers: :any,
+          methods: [:get, :post, :put, :patch, :delete, :options, :head],
+          credentials: true
+      end
+    end
   end
 end
