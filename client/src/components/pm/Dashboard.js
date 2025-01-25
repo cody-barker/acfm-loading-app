@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Container,
   Grid,
+  Select,
   Paper,
   Typography,
   AppBar,
@@ -16,15 +17,16 @@ import {
   TextField,
   Tab,
   Tabs,
-} from '@mui/material';
+  MenuItem,
+} from "@mui/material";
 import {
   Menu as MenuIcon,
   Add as AddIcon,
   ExitToApp as LogoutIcon,
-} from '@mui/icons-material';
-import { useAuth } from '../../context/AuthContext';
-import { api } from '../../utils/api';
-import LoadingListBoard from './LoadingListBoard';
+} from "@mui/icons-material";
+import { useAuth } from "../../context/AuthContext";
+import { api } from "../../utils/api";
+import LoadingListBoard from "./LoadingListBoard";
 
 function TabPanel({ children, value, index }) {
   return (
@@ -40,7 +42,6 @@ function TabPanel({ children, value, index }) {
 }
 
 function PMDashboard() {
- 
   const { user, logout } = useAuth();
   const [tabValue, setTabValue] = useState(0);
   const [openNewList, setOpenNewList] = useState(false);
@@ -49,70 +50,95 @@ function PMDashboard() {
   const [vehicles, setVehicles] = useState([]);
   const [trailers, setTrailers] = useState([]);
   const [date, setDate] = useState(new Date());
-  const [siteName, setSiteName] = useState('');
-  const [notes, setNotes] = useState('');
+  const [siteName, setSiteName] = useState("");
+  const [notes, setNotes] = useState("");
+  const [teams, setTeams] = useState([]);
+  const [selectedTeam, setSelectedTeam] = useState(null);
+  const [pmList, setPmList] = useState([]);
 
   useEffect(() => {
     fetchLoadingLists();
     fetchEquipmentItems();
     fetchVehicles();
     fetchTrailers();
+    fetchTeams();
+    fetchPMs();
   }, []);
 
   const fetchLoadingLists = async () => {
     try {
-      const data = await api.get('/loading_lists');
+      const data = await api.get("/loading_lists");
       setLoadingLists(data);
     } catch (error) {
-      console.error('Error fetching loading lists:', error);
+      console.error("Error fetching loading lists:", error);
+    }
+  };
+
+  const fetchTeams = async () => {
+    try {
+      const data = await api.get("/teams");
+      setTeams(data);
+    } catch (error) {
+      console.error("Error fetching teams:", error);
+    }
+  };
+
+  const fetchPMs = async () => {
+    try {
+      const data = await api.get("/pms");
+      setPmList(data);
+    } catch (error) {
+      console.error("Error fetching PMs:", error);
     }
   };
 
   const fetchEquipmentItems = async () => {
     try {
-      const data = await api.get('/equipment_items');
+      const data = await api.get("/equipment_items");
       setEquipmentItems(data);
     } catch (error) {
-      console.error('Error fetching equipment items:', error);
+      console.error("Error fetching equipment items:", error);
     }
   };
 
   const fetchVehicles = async () => {
     try {
-      const data = await api.get('/vehicles');
+      const data = await api.get("/vehicles");
       setVehicles(data);
     } catch (error) {
-      console.error('Error fetching vehicles:', error);
+      console.error("Error fetching vehicles:", error);
     }
   };
 
   const fetchTrailers = async () => {
     try {
-      const data = await api.get('/trailers');
+      const data = await api.get("/trailers");
       setTrailers(data);
     } catch (error) {
-      console.error('Error fetching trailers:', error);
+      console.error("Error fetching trailers:", error);
     }
   };
 
   const handleCreateList = async () => {
     try {
-      const data = await api.post('/loading_lists', {
+      const data = await api.post("/loading_lists", {
         loading_list: {
           date: date,
           site_name: siteName,
           notes: notes,
           pm_id: user.id,
-          status: 'pending'
-        }
+          status: "pending",
+          team_id: selectedTeam,
+        },
       });
       setLoadingLists([...loadingLists, data]);
       setOpenNewList(false);
       setDate(new Date());
-      setSiteName('');
-      setNotes('');
-    } catch (error) { 
-      console.error('Error creating loading list:', error);
+      setSiteName("");
+      setNotes("");
+      setSelectedTeam(null);
+    } catch (error) {
+      console.error("Error creating loading list:", error);
     }
   };
 
@@ -143,7 +169,7 @@ function PMDashboard() {
       </AppBar>
 
       <Container maxWidth="xl" sx={{ mt: 4 }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs value={tabValue} onChange={handleTabChange}>
             <Tab label="Overview" />
             <Tab label="Loading Lists" />
@@ -175,6 +201,10 @@ function PMDashboard() {
             equipmentItems={equipmentItems}
             vehicles={vehicles}
             trailers={trailers}
+            teams={teams}
+            setTeams={setTeams}
+            pmList={pmList}
+            setPmList={setPmList}
             onUpdateList={fetchLoadingLists}
           />
         </TabPanel>
@@ -198,6 +228,23 @@ function PMDashboard() {
             value={siteName}
             onChange={(e) => setSiteName(e.target.value)}
           />
+          <Box>
+            <Typography variant="h5">Select a Team</Typography>
+            <Select
+              value={selectedTeam}
+              onChange={(e) => setSelectedTeam(e.target.value)}
+              displayEmpty
+            >
+              <MenuItem value={null}>
+                <em>None</em>
+              </MenuItem>
+              {teams.map((team) => (
+                <MenuItem key={team.id} value={team.id}>
+                  {team.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </Box>
           <TextField
             margin="dense"
             label="Notes"
@@ -211,7 +258,9 @@ function PMDashboard() {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenNewList(false)}>Cancel</Button>
-          <Button onClick={handleCreateList} variant="contained">Create</Button>
+          <Button onClick={handleCreateList} variant="contained">
+            Create
+          </Button>
         </DialogActions>
       </Dialog>
     </Box>
