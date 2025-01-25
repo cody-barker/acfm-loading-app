@@ -40,6 +40,7 @@ function TabPanel({ children, value, index }) {
 }
 
 function PMDashboard() {
+ 
   const { user, logout } = useAuth();
   const [tabValue, setTabValue] = useState(0);
   const [openNewList, setOpenNewList] = useState(false);
@@ -47,7 +48,7 @@ function PMDashboard() {
   const [equipmentItems, setEquipmentItems] = useState([]);
   const [vehicles, setVehicles] = useState([]);
   const [trailers, setTrailers] = useState([]);
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [date, setDate] = useState(new Date());
   const [siteName, setSiteName] = useState('');
   const [notes, setNotes] = useState('');
 
@@ -107,7 +108,7 @@ function PMDashboard() {
       });
       setLoadingLists([...loadingLists, data]);
       setOpenNewList(false);
-      setDate(new Date().toISOString().split('T')[0]);
+      setDate(new Date());
       setSiteName('');
       setNotes('');
     } catch (error) { 
@@ -184,7 +185,6 @@ function PMDashboard() {
         <DialogContent>
           <TextField
             margin="dense"
-            label="Date"
             type="date"
             fullWidth
             value={date}
