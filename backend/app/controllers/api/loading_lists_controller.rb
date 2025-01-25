@@ -6,6 +6,7 @@ class Api::LoadingListsController < ApplicationController
     @loading_lists = LoadingList.includes(
       :pm,
       :loader,
+      :team,
       { loading_list_items: :equipment_item },
       :equipment_items,
       :vehicle_assignment,
@@ -16,6 +17,7 @@ class Api::LoadingListsController < ApplicationController
     render json: @loading_lists, include: [
       { loading_list_items: { include: :equipment_item } },
       :pm,
+      :team,
       :equipment_items,
       :vehicle_assignment,
       :trailer_assignment
@@ -28,6 +30,7 @@ class Api::LoadingListsController < ApplicationController
       :equipment_items,
       :vehicle_assignment,
       :trailer_assignment,
+      :team,
       :pm # Include the PM association
     ], equipment_serializer_options: { excluding_loading_list_id: @loading_list.id }
   end
@@ -42,6 +45,8 @@ class Api::LoadingListsController < ApplicationController
         { loading_list_items: { include: :equipment_item } },
         :equipment_items,
         :vehicle_assignment,
+        :team,
+        :pm,
         :trailer_assignment
       ], equipment_serializer_options: { excluding_loading_list_id: @loading_list.id }
     else
@@ -55,7 +60,8 @@ class Api::LoadingListsController < ApplicationController
         { loading_list_items: { include: :equipment_item } },
         :equipment_items,
         :vehicle_assignment,
-        :trailer_assignment
+        :trailer_assignment,
+        :team
       ], equipment_serializer_options: { excluding_loading_list_id: @loading_list.id }
     else
       render json: { errors: @loading_list.errors.full_messages }, status: :unprocessable_entity
@@ -77,6 +83,7 @@ class Api::LoadingListsController < ApplicationController
     params.require(:loading_list).permit(
       :date,
       :site_name,
+      :team_id,
       :notes,
       :status,
       :loader_id,

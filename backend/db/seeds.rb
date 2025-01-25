@@ -28,6 +28,18 @@ loader = User.create!(
   last_name: 'Wyzowski'
 )
 
+team1 = Team.create!(
+  name: 'HT1',
+)
+
+team2 = Team.create!(
+  name: 'HT2',
+)
+
+supportTeam1 = Team.create!(
+  name: 'Support Team 1',
+)
+
 puts "Created users:"
 puts "PM - Email: pm@example.com, Password: password123"
 puts "Loader - Email: loader@example.com, Password: password123"

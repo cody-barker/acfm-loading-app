@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     delete '/logout', to: 'sessions#destroy'
     get '/auto_login', to: 'sessions#auto_login'
 
+    resources :teams, only: [:index, :show, :create, :update, :destroy]
     resources :equipment_items, only: [:index, :show, :create, :update, :destroy]
     resources :vehicles, only: [:index, :show, :create, :update, :destroy]
     resources :trailers, only: [:index, :show, :create, :update, :destroy]

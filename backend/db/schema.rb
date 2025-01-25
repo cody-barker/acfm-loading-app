@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_25_211321) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_25_223344) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -47,8 +47,15 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_25_211321) do
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "team_id"
     t.index ["loader_id"], name: "index_loading_lists_on_loader_id"
     t.index ["pm_id"], name: "index_loading_lists_on_pm_id"
+  end
+
+  create_table "teams", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "trailer_assignments", force: :cascade do |t|
