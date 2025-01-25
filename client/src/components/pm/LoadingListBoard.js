@@ -82,16 +82,6 @@ const LoadingListBoard = ({
     }
   };
 
-  const handleEditList = async (event, listId) => {
-    event.stopPropagation();
-    try {
-      const freshData = await api.get(`/loading_lists/${listId}`);
-      setSelectedList(freshData);
-    } catch (error) {
-      console.error("Error fetching loading list details:", error);
-    }
-  };
-
   const handleEditClick = (list) => {
     setEditForm({
       site_name: list.site_name,
@@ -99,7 +89,7 @@ const LoadingListBoard = ({
       pm_id: list.pm_id,
       team_id: list.team_id,
     });
-    setSelectedList(list);
+    console.log(list);
     setEditDialogOpen(true);
   };
 
@@ -217,7 +207,10 @@ const LoadingListBoard = ({
                       </Typography>
                       <IconButton
                         size="small"
-                        onClick={(e) => handleEditClick(list)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEditClick(list);
+                        }}
                         sx={{
                           position: "absolute",
                           top: 14,
@@ -314,7 +307,10 @@ const LoadingListBoard = ({
                       </Typography>
                       <IconButton
                         size="small"
-                        onClick={(e) => handleEditClick(list)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEditClick(list);
+                        }}
                         sx={{
                           position: "absolute",
                           top: 14,
@@ -412,7 +408,10 @@ const LoadingListBoard = ({
                       </Typography>
                       <IconButton
                         size="small"
-                        onClick={(e) => handleEditClick(list)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEditClick(list);
+                        }}
                         sx={{
                           position: "absolute",
                           top: 14,
@@ -487,7 +486,9 @@ const LoadingListBoard = ({
             fullWidth
             variant="outlined"
             value={editForm.site_name}
-            onChange={(e) => setEditForm({ ...editForm, site_name: e.target.value })}
+            onChange={(e) =>
+              setEditForm({ ...editForm, site_name: e.target.value })
+            }
           />
           <TextField
             margin="dense"
@@ -504,7 +505,9 @@ const LoadingListBoard = ({
               labelId="pm-label"
               label="PM"
               value={editForm.pm_id || ""}
-              onChange={(e) => setEditForm({ ...editForm, pm_id: e.target.value })}
+              onChange={(e) =>
+                setEditForm({ ...editForm, pm_id: e.target.value })
+              }
             >
               {pmList.map((pm) => (
                 <MenuItem key={pm.id} value={pm.id}>
@@ -519,7 +522,9 @@ const LoadingListBoard = ({
               labelId="team-label"
               label="Team"
               value={editForm.team_id || ""}
-              onChange={(e) => setEditForm({ ...editForm, team_id: e.target.value })}
+              onChange={(e) =>
+                setEditForm({ ...editForm, team_id: e.target.value })
+              }
             >
               {teams.map((team) => (
                 <MenuItem key={team.id} value={team.id}>
@@ -531,7 +536,9 @@ const LoadingListBoard = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setEditDialogOpen(false)}>Cancel</Button>
-          <Button onClick={handleEditSubmit} variant="contained">Update</Button>
+          <Button onClick={handleEditSubmit} variant="contained">
+            Update
+          </Button>
         </DialogActions>
       </Dialog>
     </Box>
