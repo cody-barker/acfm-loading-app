@@ -20,7 +20,7 @@ import LoadingListDetail from './LoadingListDetail';
 const LoadingListBoard = ({ loadingLists, onUpdateList }) => {
   const [selectedList, setSelectedList] = useState(null);
   const f = new Intl.DateTimeFormat('en-US', {
-    dateStyle: 'short'
+    dateStyle: 'full'
   });
   const handleCreateList = async () => {
     try {
@@ -77,15 +77,30 @@ const LoadingListBoard = ({ loadingLists, onUpdateList }) => {
     );
   }
 
-  const today = new Date();
-  const tomorrow = new Date();
-  tomorrow.setDate(today.getDate() + 1);
-  const oneWeekAgo = new Date();
-  oneWeekAgo.setDate(today.getDate() - 7);
+// Filter lists based on date comparisons
+const today = new Date();
+const tomorrow = new Date();
+tomorrow.setDate(today.getDate() + 1);
+const oneWeekAgo = new Date();
+oneWeekAgo.setDate(today.getDate() - 7);
 
-  const todayLists = loadingLists.filter(list => list.date === today.toLocaleDateString('en-US'));
-  const tomorrowLists = loadingLists.filter(list => new Date(list.date).toDateString() === tomorrow.toDateString());
-  const previousLists = loadingLists.filter(list => new Date(list.date) < today && new Date(list.date) >= oneWeekAgo);
+// Ensure list.date is parsed correctly
+const todayLists = loadingLists.filter(list => {
+  const listDate = new Date(`${list.date}T00:00:00`); // console.lpend time to date
+  console.log(listDate.toDateString())
+  return listDate.toDateString() === today.toDateString();
+});
+
+const tomorrowLists = loadingLists.filter(list => {
+  const listDate = new Date(`${list.date}T00:00:00`); // Append time to date
+  return listDate.toDateString() === tomorrow.toDateString();
+});
+
+const previousLists = loadingLists.filter(list => {
+  const listDate = new Date(`${list.date}T24:00:00`); // Append time to date
+  console.log(listDate, "listDate", today, "today", oneWeekAgo, "oneWeekAgo")
+  return listDate < today && listDate >= oneWeekAgo; // Ensure it is strictly less than today
+});
 
   return (
     <Box sx={{ p: 2 }}>
@@ -133,7 +148,7 @@ const LoadingListBoard = ({ loadingLists, onUpdateList }) => {
                       </IconButton>
                     </Box>
                     <Typography color="textSecondary" gutterBottom>
-                      {f.format(list.date)}
+                      {list.date}
                     </Typography>
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
                       <Chip 
