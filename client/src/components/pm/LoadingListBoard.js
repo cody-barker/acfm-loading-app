@@ -26,9 +26,9 @@ const LoadingListBoard = ({ loadingLists, onUpdateList }) => {
     try {
       const response = await api.post('/loading_lists', {
         loading_list: {
-          date: '',
+          date: today,
           site_name: 'New Loading List',
-          notes: '',
+          notes: ''
         }
       });
       
