@@ -87,18 +87,17 @@ oneWeekAgo.setDate(today.getDate() - 7);
 // Ensure list.date is parsed correctly
 const todayLists = loadingLists.filter(list => {
   const listDate = new Date(`${list.date}T00:00:00`); // console.lpend time to date
-  console.log(listDate.toDateString())
   return listDate.toDateString() === today.toDateString();
 });
 
 const tomorrowLists = loadingLists.filter(list => {
   const listDate = new Date(`${list.date}T00:00:00`); // Append time to date
+  console.log(list)
   return listDate.toDateString() === tomorrow.toDateString();
 });
 
 const previousLists = loadingLists.filter(list => {
   const listDate = new Date(`${list.date}T24:00:00`); // Append time to date
-  console.log(listDate, "listDate", today, "today", oneWeekAgo, "oneWeekAgo")
   return listDate < today && listDate >= oneWeekAgo; // Ensure it is strictly less than today
 });
 
@@ -133,6 +132,9 @@ const previousLists = loadingLists.filter(list => {
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
                       <Typography variant="h6" noWrap sx={{ maxWidth: '80%' }}>
                         {list.site_name}
+                      </Typography>
+                      <Typography variant="h6" noWrap sx={{ width: '30%' }}>
+                        {`${list.pm.first_name} ${list.pm.last_name}`}
                       </Typography>
                       <IconButton
                         size="small"
@@ -201,6 +203,9 @@ const previousLists = loadingLists.filter(list => {
                       <Typography variant="h6" noWrap sx={{ maxWidth: '80%' }}>
                         {list.site_name}
                       </Typography>
+                      <Typography variant="h6" noWrap sx={{ width: '30%' }}>
+                        {`${list.pm.first_name} ${list.pm.last_name}`}
+                      </Typography>
                       <IconButton
                         size="small"
                         onClick={(e) => handleDeleteList(e, list.id)}
@@ -267,6 +272,9 @@ const previousLists = loadingLists.filter(list => {
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
                       <Typography variant="h6" noWrap sx={{ maxWidth: '80%' }}>
                         {list.site_name}
+                      </Typography>
+                      <Typography variant="h6" noWrap sx={{ width: '30%' }}>
+                        {`${list.pm.first_name} ${list.pm.last_name}`}
                       </Typography>
                       <IconButton
                         size="small"

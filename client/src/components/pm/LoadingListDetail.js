@@ -90,6 +90,16 @@ const LoadingListDetail = ({ loadingList, onBack, onUpdateList }) => {
     }
   };
 
+const [selectedCategory, setSelectedCategory] = useState('All'); // Default to show all
+
+const handleCategoryChange = (event) => {
+  setSelectedCategory(event.target.value);
+};
+
+const filteredEquipmentItems = equipmentItems.filter(item => {
+  return selectedCategory === 'All' || item.category === selectedCategory;
+});
+
   const handleQuantityChange = async (item, change) => {
     const newQuantity = Math.max(0, parseInt(item.quantity) + change);
     
@@ -178,6 +188,19 @@ const LoadingListDetail = ({ loadingList, onBack, onUpdateList }) => {
           <Grid item xs={6}>
             <Paper sx={{ p: 2, height: '80vh' }}>
               <Typography variant="h6" sx={{ mb: 2 }}>Available Equipment</Typography>
+              <Box>
+                <select onChange={handleCategoryChange} value={selectedCategory}>
+                  <option value="All">All</option>
+                  <option value="Trucks">Trucks</option>
+                  <option value="Trailers">Trailers</option>
+                  <option value="Hand Tools">Hand Tools</option>
+                  <option value="Power Tools">Power Tools</option>
+                  <option value="Spray">Spray</option>
+                  <option value="Site Keys">Site Keys</option>
+                  <option value="PPE">PPE</option>
+                  <option value="Other">Other</option>
+                </select>
+              </Box>
               <Droppable droppableId="available-equipment" isDropDisabled={true}>
                 {(provided, snapshot) => (
                   <Box

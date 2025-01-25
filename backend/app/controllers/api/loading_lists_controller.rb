@@ -15,6 +15,7 @@ class Api::LoadingListsController < ApplicationController
     
     render json: @loading_lists, include: [
       { loading_list_items: { include: :equipment_item } },
+      :pm,
       :equipment_items,
       :vehicle_assignment,
       :trailer_assignment
@@ -26,7 +27,8 @@ class Api::LoadingListsController < ApplicationController
       { loading_list_items: { include: :equipment_item } },
       :equipment_items,
       :vehicle_assignment,
-      :trailer_assignment
+      :trailer_assignment,
+      :pm # Include the PM association
     ], equipment_serializer_options: { excluding_loading_list_id: @loading_list.id }
   end
   

@@ -13,7 +13,9 @@ pm = User.create!(
   name: 'Project Manager',
   email: 'pm@example.com',
   password: 'password123',
-  role: 'pm'
+  role: 'pm',
+  first_name: 'John',
+  last_name: 'Smith'
 )
 
 # Create Loader user
@@ -21,7 +23,9 @@ loader = User.create!(
   name: 'Loader',
   email: 'loader@example.com',
   password: 'password123',
-  role: 'loader'
+  role: 'loader',
+  first_name: 'Mike',
+  last_name: 'Wyzowski'
 )
 
 puts "Created users:"
@@ -29,16 +33,16 @@ puts "PM - Email: pm@example.com, Password: password123"
 puts "Loader - Email: loader@example.com, Password: password123"
 
 # Create Equipment Items
-equipment_categories = ['Tools', 'Safety Equipment', 'Power Tools', 'Machinery']
+equipment_categories = ['Hand Tools', 'PPE', 'Power Tools', 'Vehicles', 'Trailers', 'Site Keys', 'Other', 'Spray' ]
 equipment_items = [
-  { name: 'Hammer', category: 'Tools', description: 'Standard claw hammer', quantity: 10 },
-  { name: 'Safety Glasses', category: 'Safety Equipment', description: 'Clear safety glasses', quantity: 20 },
+  { name: 'Hammer', category: 'Hand Tools', description: 'Standard claw hammer', quantity: 10 },
+  { name: 'Safety Glasses', category: 'PPE', description: 'Clear safety glasses', quantity: 20 },
   { name: 'Power Drill', category: 'Power Tools', description: '18V cordless drill', quantity: 5 },
-  { name: 'Ladder', category: 'Tools', description: '8ft aluminum ladder', quantity: 3 },
-  { name: 'Hard Hat', category: 'Safety Equipment', description: 'Type II hard hat', quantity: 15 },
+  { name: 'Ladder', category: 'Hand Tools', description: '8ft aluminum ladder', quantity: 3 },
+  { name: 'Hard Hat', category: 'PPE', description: 'Type II hard hat', quantity: 15 },
   { name: 'Circular Saw', category: 'Power Tools', description: '7-1/4" circular saw', quantity: 4 },
-  { name: 'Generator', category: 'Machinery', description: '5000W portable generator', quantity: 2 },
-  { name: 'Work Gloves', category: 'Safety Equipment', description: 'Leather work gloves', quantity: 25 }
+  { name: 'Backpack Sprayer', category: 'Spray', description: 'Backpack Sprayer', quantity: 20 },
+  { name: 'Work Gloves', category: 'PPE', description: 'Leather work gloves', quantity: 25 }
 ]
 
 equipment_items.each do |item|
