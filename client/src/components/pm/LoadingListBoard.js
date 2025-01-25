@@ -118,7 +118,7 @@ const LoadingListBoard = ({ loadingLists, onUpdateList }) => {
                   </IconButton>
                 </Box>
                 <Typography color="textSecondary" gutterBottom>
-                  {new Date(list.date).toLocaleDateString()}
+                  {list.date}
                 </Typography>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
                   <Chip 

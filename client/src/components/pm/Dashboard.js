@@ -43,11 +43,6 @@ function PMDashboard() {
   const { user, logout } = useAuth();
   const [tabValue, setTabValue] = useState(0);
   const [openNewList, setOpenNewList] = useState(false);
-  const [newListData, setNewListData] = useState({
-    date: new Date().toISOString().split('T')[0],
-    site_name: '',
-    notes: '',
-  });
   const [loadingLists, setLoadingLists] = useState([]);
   const [equipmentItems, setEquipmentItems] = useState([]);
   const [vehicles, setVehicles] = useState([]);
@@ -112,11 +107,10 @@ function PMDashboard() {
       });
       setLoadingLists([...loadingLists, data]);
       setOpenNewList(false);
-      setNewListData({
-        site_name: '',
-        notes: '',
-      });
-    } catch (error) {
+      setDate(new Date().toISOString().split('T')[0]);
+      setSiteName('');
+      setNotes('');
+    } catch (error) { 
       console.error('Error creating loading list:', error);
     }
   };
