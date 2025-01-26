@@ -28,6 +28,25 @@ loader = User.create!(
   last_name: 'Wyzowski'
 )
 
+pm2 = User.create!(
+  name: 'Project Manager',
+  email: 'pm2@example.com',
+  password: 'password123',
+  role: 'pm',
+  first_name: 'Addie',
+  last_name: 'Clark'
+)
+
+# Create Loader user
+loader2 = User.create!(
+  name: 'Loader',
+  email: 'loader2@example.com',
+  password: 'password123',
+  role: 'loader',
+  first_name: 'Sam',
+  last_name: 'Wise'
+)
+
 team1 = Team.create!(
   name: 'HT1',
 )
