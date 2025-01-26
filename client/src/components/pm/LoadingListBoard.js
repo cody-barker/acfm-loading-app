@@ -90,6 +90,7 @@ const LoadingListBoard = ({
       date: list.date,
       pm_id: list.pm_id,
       team_id: list.team? list.team.id : null,
+      notes: list.notes,
     });
     setEditDialogOpen(true);
   };
@@ -205,6 +206,7 @@ const LoadingListBoard = ({
                       <Typography variant="h6" noWrap sx={{ mr: 10 }}>
                         {`${list.pm.first_name} ${list.pm.last_name}`}
                       </Typography>
+                      <Box></Box>
                       <IconButton
                         size="small"
                         onClick={(e) => {
@@ -267,6 +269,9 @@ const LoadingListBoard = ({
                           variant="outlined"
                         />
                       )}
+                      <Typography variant="p" noWrap sx={{ mr: 10 }}>
+                        {list.notes}
+                      </Typography>
                     </Box>
                   </CardContent>
                 </Card>
@@ -304,7 +309,11 @@ const LoadingListBoard = ({
                       </Typography>
                       <Typography variant="h6" noWrap sx={{ mr: 10 }}>
                         {`${list.pm.first_name} ${list.pm.last_name}`}
+                        <Typography variant="h6" noWrap sx={{ mr: 10 }}>
+                          {list.notes}
+                        </Typography>
                       </Typography>
+
                       <IconButton
                         size="small"
                         onClick={(e) => {
@@ -406,6 +415,9 @@ const LoadingListBoard = ({
                       <Typography variant="h6" noWrap sx={{ mr: 10 }}>
                         {`${list.pm.first_name} ${list.pm.last_name}`}
                       </Typography>
+                      <Typography variant="h6" noWrap sx={{ mr: 10 }}>
+                        {list.notes}
+                      </Typography>
                       <IconButton
                         size="small"
                         onClick={(e) => {
@@ -435,7 +447,7 @@ const LoadingListBoard = ({
                       </IconButton>
                     </Box>
                     <Typography variant="h6" noWrap sx={{ mb: 1 }}>
-                      {list.team? list.team.name : "No Team"}
+                      {list.team ? list.team.name : "No Team"}
                     </Typography>
                     <Typography
                       color="textSecondary"
@@ -533,6 +545,17 @@ const LoadingListBoard = ({
               ))}
             </Select>
           </FormControl>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Notes"
+            fullWidth
+            variant="outlined"
+            value={editForm.notes}
+            onChange={(e) =>
+              setEditForm({ ...editForm, notes: e.target.value })
+            }
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setEditDialogOpen(false)}>Cancel</Button>
