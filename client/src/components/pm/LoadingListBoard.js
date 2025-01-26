@@ -41,7 +41,7 @@ const LoadingListBoard = ({
   const [editForm, setEditForm] = useState({
     site_name: "",
     date: "",
-    pm_id: null,
+    pm_id: "",
     team_id: "",
   });
   const f = new Intl.DateTimeFormat("en-US", {
@@ -89,7 +89,7 @@ const LoadingListBoard = ({
       site_name: list.site_name,
       date: list.date,
       pm_id: list.pm_id,
-      team_id: list.team_id,
+      team_id: list.team? list.team.id : null,
     });
     setEditDialogOpen(true);
   };
@@ -234,7 +234,7 @@ const LoadingListBoard = ({
                       </IconButton>
                     </Box>
                     <Typography variant="h6" noWrap sx={{ mb: 1 }}>
-                      {list.team.name}
+                      {list.team ? list.team.name : "No Team"}
                     </Typography>
                     <Typography
                       color="textSecondary"
@@ -334,7 +334,7 @@ const LoadingListBoard = ({
                       </IconButton>
                     </Box>
                     <Typography variant="h6" noWrap sx={{ mb: 1 }}>
-                      {list.team.name}
+                      {list.team ? list.team.name : "No Team"}{" "}
                     </Typography>
                     <Typography
                       color="textSecondary"
@@ -435,7 +435,7 @@ const LoadingListBoard = ({
                       </IconButton>
                     </Box>
                     <Typography variant="h6" noWrap sx={{ mb: 1 }}>
-                      {list.team.name}
+                      {list.team? list.team.name : "No Team"}
                     </Typography>
                     <Typography
                       color="textSecondary"
