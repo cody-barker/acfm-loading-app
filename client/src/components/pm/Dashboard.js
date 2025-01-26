@@ -47,9 +47,8 @@ function PMDashboard() {
   const [openNewList, setOpenNewList] = useState(false);
   const [loadingLists, setLoadingLists] = useState([]);
   const [equipmentItems, setEquipmentItems] = useState([]);
-  const [vehicles, setVehicles] = useState([]);
-  const [trailers, setTrailers] = useState([]);
   const [date, setDate] = useState(new Date());
+  const [returnDate, setReturnDate] = useState(new Date());
   const [siteName, setSiteName] = useState("");
   const [notes, setNotes] = useState("");
   const [teams, setTeams] = useState([]);
@@ -59,8 +58,6 @@ function PMDashboard() {
   useEffect(() => {
     fetchLoadingLists();
     fetchEquipmentItems();
-    fetchVehicles();
-    fetchTrailers();
     fetchTeams();
     fetchPMs();
   }, []);
@@ -103,29 +100,12 @@ function PMDashboard() {
     }
   };
 
-  const fetchVehicles = async () => {
-    try {
-      const data = await api.get("/vehicles");
-      setVehicles(data);
-    } catch (error) {
-      console.error("Error fetching vehicles:", error);
-    }
-  };
-
-  const fetchTrailers = async () => {
-    try {
-      const data = await api.get("/trailers");
-      setTrailers(data);
-    } catch (error) {
-      console.error("Error fetching trailers:", error);
-    }
-  };
-
   const handleCreateList = async () => {
     try {
       const data = await api.post("/loading_lists", {
         loading_list: {
           date: date,
+          return_date: returnDate,
           site_name: siteName,
           notes: notes,
           pm_id: user.id,
@@ -201,8 +181,6 @@ function PMDashboard() {
           <LoadingListBoard
             loadingLists={loadingLists}
             equipmentItems={equipmentItems}
-            vehicles={vehicles}
-            trailers={trailers}
             teams={teams}
             setTeams={setTeams}
             pmList={pmList}
@@ -217,18 +195,27 @@ function PMDashboard() {
         <DialogContent>
           <TextField
             margin="dense"
+            label="Site Name"
+            type="text"
+            fullWidth
+            value={siteName}
+            onChange={(e) => setSiteName(e.target.value)}
+          />
+          <TextField
+            margin="dense"
             type="date"
+            label="Date"
             fullWidth
             value={date}
             onChange={(e) => setDate(e.target.value)}
           />
           <TextField
             margin="dense"
-            label="Site Name"
-            type="text"
+            type="date"
+            label="Return Date"
             fullWidth
-            value={siteName}
-            onChange={(e) => setSiteName(e.target.value)}
+            value={returnDate}
+            onChange={(e) => setReturnDate(e.target.value)}
           />
           <Box>
             <Typography variant="h5">Select a Team</Typography>
