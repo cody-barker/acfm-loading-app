@@ -41,6 +41,7 @@ const LoadingListBoard = ({
   const [editForm, setEditForm] = useState({
     site_name: "",
     date: "",
+    return_date: "",
     pm_id: "",
     team_id: "",
   });
@@ -51,7 +52,8 @@ const LoadingListBoard = ({
     try {
       const response = await api.post("/loading_lists", {
         loading_list: {
-          date: today,
+          date: tomorrow,
+          return_date: tomorrow,
           site_name: "New Loading List",
           notes: "",
         },
