@@ -249,7 +249,7 @@ const LoadingListDetail = ({ loadingList, onBack, onUpdateList }) => {
                       p: 1,
                     }}
                   >
-                    {equipmentItems.map((item, index) => {
+                    {filteredEquipmentItems.map((item, index) => {
                       const availableQty = getAvailableQuantity(item);
                       return (
                         <Draggable
