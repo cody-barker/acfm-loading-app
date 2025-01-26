@@ -35,12 +35,13 @@ const LoadingListBoard = ({
   pmList,
   setPmList,
 }) => {
+  const [editList, setEditList] = useState(null);
   const [selectedList, setSelectedList] = useState(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editForm, setEditForm] = useState({
     site_name: "",
     date: "",
-    pm_id: "",
+    pm_id: null,
     team_id: "",
   });
   const f = new Intl.DateTimeFormat("en-US", {
@@ -83,19 +84,19 @@ const LoadingListBoard = ({
   };
 
   const handleEditClick = (list) => {
+    setEditList(list);
     setEditForm({
       site_name: list.site_name,
       date: list.date,
       pm_id: list.pm_id,
       team_id: list.team_id,
     });
-    console.log(list);
     setEditDialogOpen(true);
   };
 
   const handleEditSubmit = async () => {
     try {
-      await api.put(`/loading_lists/${selectedList.id}`, {
+      await api.put(`/loading_lists/${editList.id}`, {
         loading_list: editForm,
       });
       onUpdateList(); // Refresh the loading lists
@@ -141,7 +142,6 @@ const LoadingListBoard = ({
 
   const tomorrowLists = loadingLists.filter((list) => {
     const listDate = new Date(`${list.date}T00:00:00`); // Append time to date
-    console.log(list);
     return listDate.toDateString() === tomorrow.toDateString();
   });
 

@@ -31,7 +31,7 @@ class Api::LoadingListsController < ApplicationController
       :vehicle_assignment,
       :trailer_assignment,
       :team,
-      :pm # Include the PM association
+      :pm,
     ], equipment_serializer_options: { excluding_loading_list_id: @loading_list.id }
   end
   
@@ -61,7 +61,8 @@ class Api::LoadingListsController < ApplicationController
         :equipment_items,
         :vehicle_assignment,
         :trailer_assignment,
-        :team
+        :team,
+        :pm,
       ], equipment_serializer_options: { excluding_loading_list_id: @loading_list.id }
     else
       render json: { errors: @loading_list.errors.full_messages }, status: :unprocessable_entity
