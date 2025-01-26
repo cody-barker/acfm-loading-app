@@ -26,6 +26,7 @@ const LoadingListDetail = ({ loadingList, onBack, onUpdateList }) => {
   const [equipmentItems, setEquipmentItems] = useState([]);
   const [warning, setWarning] = useState(null);
   const [localLoadingList, setLocalLoadingList] = useState(loadingList);
+  const [selectedQuantities, setSelectedQuantities] = useState({});
 
   useEffect(() => {
     setLocalLoadingList(loadingList);
@@ -63,9 +64,12 @@ const LoadingListDetail = ({ loadingList, onBack, onUpdateList }) => {
       return;
     }
 
-    if (getAvailableQuantity(equipmentItem) < 1) {
-      setWarning("No items available in inventory");
-      return;
+    // Optional: Warn the user but still allow adding
+    const availableQuantity = getAvailableQuantity(equipmentItem);
+    if (availableQuantity < 1) {
+      setWarning(
+        `Warning: No available inventory for ${equipmentItem.name}. Added to the list anyway.`
+      );
     }
 
     try {
@@ -119,9 +123,8 @@ const LoadingListDetail = ({ loadingList, onBack, onUpdateList }) => {
     const maxAvailable = getAvailableQuantity(item.equipment_item);
     if (newQuantity > maxAvailable) {
       setWarning(
-        `Warning: Only ${maxAvailable} ${item.equipment_item.name}(s) available in inventory`
+        `Warning: You are requesting ${newQuantity} ${item.equipment_item.name}(s), but only ${maxAvailable} are available in inventory.`
       );
-      return;
     }
 
     try {
@@ -175,14 +178,17 @@ const LoadingListDetail = ({ loadingList, onBack, onUpdateList }) => {
   const handleDragEnd = async (result) => {
     const { source, destination, draggableId } = result;
 
+    // Exit if there's no valid destination
     if (!destination) return;
 
+    // Exit if dropped in the same location
     if (
       source.droppableId === destination.droppableId &&
       source.index === destination.index
     )
       return;
 
+    // Handle dragging from available equipment to loading list
     if (
       source.droppableId === "available-equipment" &&
       destination.droppableId === "loading-list-items"
@@ -193,6 +199,13 @@ const LoadingListDetail = ({ loadingList, onBack, onUpdateList }) => {
       );
 
       if (!equipmentItem) return;
+
+      // Allow the drag and drop even if the quantity is 0
+      if (getAvailableQuantity(equipmentItem) < 1) {
+        setWarning(
+          `Warning: ${equipmentItem.name} has no available inventory but was added to the list.`
+        );
+      }
 
       await handleAddItem(equipmentItem);
     }
@@ -226,7 +239,9 @@ const LoadingListDetail = ({ loadingList, onBack, onUpdateList }) => {
                     <MenuItem value="All">All</MenuItem>
                     <MenuItem value="Trucks">Trucks</MenuItem>
                     <MenuItem value="Trailers">Trailers</MenuItem>
-                    <MenuItem value="Utility Vehicles">Utility Vehicles</MenuItem>
+                    <MenuItem value="Utility Vehicles">
+                      Utility Vehicles
+                    </MenuItem>
                     <MenuItem value="Hand Tools">Hand Tools</MenuItem>
                     <MenuItem value="Power Tools">Power Tools</MenuItem>
                     <MenuItem value="Spray">Spray</MenuItem>
@@ -262,7 +277,7 @@ const LoadingListDetail = ({ loadingList, onBack, onUpdateList }) => {
                           key={`equipment-${item.id}`}
                           draggableId={`equipment-${item.id}`}
                           index={index}
-                          isDragDisabled={availableQty < 1}
+                          isDragDisabled={false} // Allow dragging regardless of quantity
                         >
                           {(provided, snapshot) => (
                             <Card
@@ -271,11 +286,26 @@ const LoadingListDetail = ({ loadingList, onBack, onUpdateList }) => {
                               {...provided.dragHandleProps}
                               sx={{
                                 mb: 1,
-                                transform: snapshot.isDragging
-                                  ? "rotate(3deg)"
-                                  : "none",
-                                transition: "transform 0.2s ease",
                                 opacity: availableQty < 1 ? 0.5 : 1,
+                              }}
+                              onClick={() => {
+                                // Handle selection logic
+                                const newQuantity =
+                                  selectedQuantities[item.id] || 0;
+                                const newTotal = newQuantity + 1; // Increment the quantity
+
+                                // Show warning if the new total exceeds available quantity
+                                if (newTotal > availableQty) {
+                                  alert(
+                                    `Warning: You are trying to add ${newTotal} ${item.name}, but only ${availableQty} are available.`
+                                  );
+                                }
+
+                                // Update the selected quantities, allowing negatives
+                                setSelectedQuantities({
+                                  ...selectedQuantities,
+                                  [item.id]: newTotal,
+                                });
                               }}
                             >
                               <CardContent>

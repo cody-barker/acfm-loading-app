@@ -5,8 +5,8 @@ class LoadingListItem < ApplicationRecord
   
   # Validations
   validates :status, presence: true, inclusion: { in: %w[unloaded staged loaded] }
-  validates :quantity, presence: true, numericality: { greater_than: 0 }
-  validate :quantity_within_available_limit
+  # validates :quantity, presence: true, numericality: { greater_than: 0 }
+  # validate :quantity_within_available_limit
   
   # Callbacks
   after_save :update_equipment_status
