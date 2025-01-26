@@ -3,6 +3,9 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {
   Box,
   Paper,
+  Select,
+  MenuItem,
+  FormControl,
   Typography,
   Grid,
   Card,
@@ -215,20 +218,22 @@ const LoadingListDetail = ({ loadingList, onBack, onUpdateList }) => {
                 Available Equipment
               </Typography>
               <Box>
-                <select
-                  onChange={handleCategoryChange}
-                  value={selectedCategory}
-                >
-                  <option value="All">All</option>
-                  <option value="Trucks">Trucks</option>
-                  <option value="Trailers">Trailers</option>
-                  <option value="Hand Tools">Hand Tools</option>
-                  <option value="Power Tools">Power Tools</option>
-                  <option value="Spray">Spray</option>
-                  <option value="Site Keys">Site Keys</option>
-                  <option value="PPE">PPE</option>
-                  <option value="Other">Other</option>
-                </select>
+                <FormControl fullWidth>
+                  <Select
+                    onChange={handleCategoryChange}
+                    value={selectedCategory}
+                  >
+                    <MenuItem value="All">All</MenuItem>
+                    <MenuItem value="Trucks">Trucks</MenuItem>
+                    <MenuItem value="Trailers">Trailers</MenuItem>
+                    <MenuItem value="Hand Tools">Hand Tools</MenuItem>
+                    <MenuItem value="Power Tools">Power Tools</MenuItem>
+                    <MenuItem value="Spray">Spray</MenuItem>
+                    <MenuItem value="Site Keys">Site Keys</MenuItem>
+                    <MenuItem value="PPE">PPE</MenuItem>
+                    <MenuItem value="Other">Other</MenuItem>
+                  </Select>
+                </FormControl>
               </Box>
               <Droppable
                 droppableId="available-equipment"
