@@ -39,6 +39,7 @@ class Api::LoadingListsController < ApplicationController
     @loading_list = LoadingList.new(loading_list_params)
     @loading_list.pm = current_user
     @loading_list.status = 'pending' unless loading_list_params[:status]
+    @loading_list.return_date = params[:loading_list][:return_date] # Ensure this is set correctly
     
     if @loading_list.save
       render json: @loading_list, status: :created, include: [
@@ -73,6 +74,18 @@ class Api::LoadingListsController < ApplicationController
     @loading_list.destroy
     head :no_content
   end
+
+  def todays_lists
+    @loading_lists = LoadingList.where(date: Date.today)
+    render json: @loading_lists, include: [
+      { loading_list_items: { include: :equipment_item } },
+      :equipment_items,
+      :vehicle_assignment,
+      :trailer_assignment,
+      :team,
+      :pm,
+    ]
+  end
   
   private
   
@@ -88,6 +101,7 @@ class Api::LoadingListsController < ApplicationController
       :notes,
       :status,
       :loader_id,
+      :return_date,
       loading_list_items_attributes: [:id, :equipment_item_id, :quantity, :status, :_destroy]
     )
   end
