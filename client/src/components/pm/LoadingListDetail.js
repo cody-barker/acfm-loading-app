@@ -226,6 +226,7 @@ const LoadingListDetail = ({ loadingList, onBack, onUpdateList }) => {
                     <MenuItem value="All">All</MenuItem>
                     <MenuItem value="Trucks">Trucks</MenuItem>
                     <MenuItem value="Trailers">Trailers</MenuItem>
+                    <MenuItem value="Utility Vehicles">Utility Vehicles</MenuItem>
                     <MenuItem value="Hand Tools">Hand Tools</MenuItem>
                     <MenuItem value="Power Tools">Power Tools</MenuItem>
                     <MenuItem value="Spray">Spray</MenuItem>

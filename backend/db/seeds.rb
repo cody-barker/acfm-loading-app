@@ -73,7 +73,13 @@ equipment_items = [
   { name: 'Hard Hat', category: 'PPE', description: 'Type II hard hat', quantity: 15 },
   { name: 'Circular Saw', category: 'Power Tools', description: '7-1/4" circular saw', quantity: 4 },
   { name: 'Backpack Sprayer', category: 'Spray', description: 'Backpack Sprayer', quantity: 20 },
-  { name: 'Work Gloves', category: 'PPE', description: 'Leather work gloves', quantity: 25 }
+  { name: 'Work Gloves', category: 'PPE', description: 'Leather work gloves', quantity: 25 },
+  { name: 'Truck 1', category: 'Trucks', description: 'Ford F-150', quantity: 1 },
+  { name: 'Truck 2', category: 'Trucks', description: 'Chevrolet Silverado', quantity: 1 },
+  { name: 'Trailer 1', category: 'Trailers', description: 'Utility trailer', quantity: 1 },
+  { name: 'Trailer 2', category: 'Trailers', description: 'Car hauler', quantity: 1 },
+  { name: 'ATV 1', category: 'Utility Vehicles', description: 'Polaris Ranger', quantity: 1 },
+  { name: 'UTV 1', category: 'Utility Vehicles', description: 'Can-Am Maverick', quantity: 1 }
 ]
 
 equipment_items.each do |item|
