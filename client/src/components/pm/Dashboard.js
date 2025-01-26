@@ -65,6 +65,8 @@ function PMDashboard() {
     fetchPMs();
   }, []);
 
+  console.log(user);
+
   const fetchLoadingLists = async () => {
     try {
       const data = await api.get("/loading_lists");
@@ -181,7 +183,7 @@ function PMDashboard() {
             <Grid item xs={12}>
               <Paper sx={{ p: 2 }}>
                 <Typography variant="h6" gutterBottom>
-                  Welcome, {user?.name}
+                  Welcome, {user.first_name} {user.last_name}
                 </Typography>
                 <Button
                   variant="contained"

@@ -12,7 +12,9 @@ class Api::SessionsController < ApplicationController
           id: user.id,
           email: user.email,
           name: user.name,
-          role: user.role
+          role: user.role,
+          first_name: user.first_name,
+          last_name: user.last_name
         },
         token: token
       }, status: :ok
